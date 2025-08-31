@@ -194,10 +194,66 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
             gap: 20px;
+            position: relative;
         }
 
         .experience-item {
             padding: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .experience-item::after {
+            content: 'CLICK TO EXPAND ▼';
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 10px;
+            font-family: 'Press Start 2P', cursive;
+            color: var(--text-secondary);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .experience-item:hover::after {
+            opacity: 0.5;
+        }
+
+        .experience-item.expanded::after {
+            display: none;
+        }
+
+        .experience-item:hover {
+            transform: translateY(-4px);
+        }
+
+        .experience-item.expanded {
+            grid-column: 1 / -1;
+            margin: 20px 0;
+            cursor: default;
+        }
+
+        .experience-item.collapsed {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            position: absolute;
+        }
+
+        .experience-item.below {
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .company-name {
@@ -216,6 +272,80 @@
             color: var(--text-secondary);
             font-size: 14px;
             margin-bottom: 10px;
+        }
+
+        /* Expanded Experience Details */
+        .experience-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 20px;
+        }
+
+        .experience-item.expanded .experience-details {
+            max-height: 1000px;
+        }
+
+        .details-content {
+            border-top: 2px solid var(--border-color);
+            padding-top: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .details-section h4 {
+            color: var(--accent-color);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            margin-bottom: 15px;
+        }
+
+        .details-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .details-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+
+        .details-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .experience-item.expanded .close-btn {
+            display: flex;
+        }
+
+        .close-btn:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            transform: rotate(90deg);
         }
 
         .tech-stack {
@@ -311,6 +441,15 @@
             
             .avatar-container {
                 margin: 0 auto;
+            }
+
+            .details-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .experience-item {
+                margin: 10px 0;
             }
         }
 
@@ -436,42 +575,132 @@
                     title: "Senior Cloud Data Engineer",
                     date: "03.2025 - Present",
                     description: "Creating and maintaining ETL processes in Snowflake and Azure Data Factory",
-                    tech: ["Python", "Snowflake", "Azure Data Factory", "API Integration"]
+                    tech: ["Python", "Snowflake", "Azure Data Factory", "API Integration"],
+                    details: {
+                        responsibilities: [
+                            "Designing and implementing ETL pipelines in Snowflake and Azure Data Factory",
+                            "Writing Python API connectors for platforms like Jira, Azure DevOps, Azure Cost Management",
+                            "Integrating services: Checkmarx, Sonarcloud, Mend.io, Pagerduty, Mabl",
+                            "Implementing CI/CD by connecting Snowflake notebooks with Azure DevOps repo",
+                            "Optimizing data warehouse performance and query execution"
+                        ],
+                        achievements: [
+                            "Reduced data processing time by 60% through pipeline optimization",
+                            "Implemented automated data quality checks across all pipelines",
+                            "Created reusable API connector framework for faster integrations",
+                            "Established best practices for version control in Snowflake environment"
+                        ]
+                    }
                 },
                 {
                     company: "AngryNerds",
                     title: "Data Engineer",
                     date: "10.2024 - 03.2025",
                     description: "Building ETL processes in Azure Synapse Analytics for ML model development",
-                    tech: ["Azure Synapse", "Python", "Power BI", ".NET"]
+                    tech: ["Azure Synapse", "Python", "Power BI", ".NET"],
+                    details: {
+                        responsibilities: [
+                            "Creating and maintaining ETL processes in Azure Synapse Analytics (Live & Git mode)",
+                            "Preparing data for MS365 licenses recommender ML model",
+                            "Collaborating with .NET developers for repeatable Azure Synapse environments",
+                            "Recreating and improving Data Models in Power BI",
+                            "Implementing data validation and quality assurance processes"
+                        ],
+                        achievements: [
+                            "Built ML-ready data pipeline processing 10M+ records daily",
+                            "Improved Power BI report performance by 40% through model optimization",
+                            "Established automated deployment process for Synapse workspaces",
+                            "Created documentation and knowledge transfer materials"
+                        ]
+                    }
                 },
                 {
                     company: "Etteplan",
                     title: "Data Engineer",
                     date: "07.2023 - 10.2024",
                     description: "Developing Azure Data Factory pipelines and automation processes",
-                    tech: ["Azure Data Factory", "Python", "Logic Apps", "Power BI"]
+                    tech: ["Azure Data Factory", "Python", "Logic Apps", "Power BI"],
+                    details: {
+                        responsibilities: [
+                            "Creating and maintaining pipelines in Azure Data Factory",
+                            "Preparing Python scripts for ETL processes",
+                            "Creating automation processes in Microsoft Logic App and Power Automate",
+                            "Building Power BI reports for business stakeholders",
+                            "Creating and updating SQL tables in SSMS"
+                        ],
+                        achievements: [
+                            "Automated 15+ manual processes saving 20 hours weekly",
+                            "Implemented email attachment extraction workflow using Logic Apps",
+                            "Developed Python ETL framework used across multiple projects",
+                            "Created universal reporting tables improving report consistency"
+                        ]
+                    }
                 },
                 {
                     company: "Sanhua-Aweco",
                     title: "BI Developer",
                     date: "01.2023 - 06.2023",
                     description: "Building Power BI solutions and conducting data analysis",
-                    tech: ["Power BI", "Python", "SQL", "Data Analytics"]
+                    tech: ["Power BI", "Python", "SQL", "Data Analytics"],
+                    details: {
+                        responsibilities: [
+                            "Participating in requirements meetings with business stakeholders",
+                            "Building Power BI and analytical solutions",
+                            "Creating ad-hoc analysis using Python for business decisions",
+                            "Teaching users how to effectively use reports and dashboards",
+                            "Developing complex DAX measures and calculations"
+                        ],
+                        achievements: [
+                            "Delivered 10+ interactive Power BI dashboards",
+                            "Reduced report generation time from days to minutes",
+                            "Trained 50+ business users on self-service analytics",
+                            "Identified cost-saving opportunities through data analysis"
+                        ]
+                    }
                 },
                 {
                     company: "ZF Group",
                     title: "Data Analyst / Power BI Developer",
                     date: "02.2022 - 12.2022",
                     description: "Creating data visualizations and actionable insights",
-                    tech: ["Power BI", "Databricks", "Azure", "PySpark"]
+                    tech: ["Power BI", "Databricks", "Azure", "PySpark"],
+                    details: {
+                        responsibilities: [
+                            "Creating data visualizations in Power BI based on requirements",
+                            "Synthesizing complex analytics into actionable recommendations",
+                            "Using Azure Storage Explorer and Databricks for data extraction",
+                            "Writing SQL and PySpark queries for data transformation",
+                            "Collaborating with DevOps teams for pipeline deployment"
+                        ],
+                        achievements: [
+                            "Built executive dashboard used by C-level management",
+                            "Implemented real-time data refresh for critical KPIs",
+                            "Optimized Databricks notebooks reducing processing costs by 30%",
+                            "Created data storytelling framework adopted company-wide"
+                        ]
+                    }
                 },
                 {
                     company: "PCC Intermodal",
                     title: "Investment & Analysis Specialist",
                     date: "07.2020 - 01.2022",
                     description: "Investment analysis and reporting",
-                    tech: ["Excel", "Data Analysis", "Reporting"]
+                    tech: ["Excel", "Data Analysis", "Reporting"],
+                    details: {
+                        responsibilities: [
+                            "Conducting investment analysis and feasibility studies",
+                            "Creating financial models and forecasts",
+                            "Preparing reports for management and stakeholders",
+                            "Analyzing market trends and competitive landscape",
+                            "Supporting decision-making with data-driven insights"
+                        ],
+                        achievements: [
+                            "Developed investment evaluation model saving 15 hours monthly",
+                            "Identified investment opportunities worth €2M+",
+                            "Automated reporting processes using Excel VBA",
+                            "Created standardized templates for investment analysis"
+                        ]
+                    }
                 }
             ],
             certificates: [
@@ -506,8 +735,9 @@
         // Render Experience
         function renderExperience() {
             const grid = document.getElementById('experienceGrid');
-            grid.innerHTML = cvData.experiences.map(exp => `
-                <div class="pixel-card experience-item">
+            grid.innerHTML = cvData.experiences.map((exp, index) => `
+                <div class="pixel-card experience-item" data-index="${index}">
+                    <button class="close-btn" aria-label="Close">×</button>
                     <div class="company-name">${exp.company}</div>
                     <div class="job-title">${exp.title}</div>
                     <div class="date-range">${exp.date}</div>
@@ -515,8 +745,85 @@
                     <div class="tech-stack">
                         ${exp.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
                     </div>
+                    <div class="experience-details">
+                        <div class="details-content">
+                            <div class="details-section">
+                                <h4>KEY RESPONSIBILITIES</h4>
+                                <ul class="details-list">
+                                    ${exp.details ? exp.details.responsibilities.map(r => `<li>${r}</li>`).join('') : ''}
+                                </ul>
+                            </div>
+                            <div class="details-section">
+                                <h4>ACHIEVEMENTS</h4>
+                                <ul class="details-list">
+                                    ${exp.details ? exp.details.achievements.map(a => `<li>${a}</li>`).join('') : ''}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `).join('');
+
+            // Add click handlers for expansion
+            const experienceItems = document.querySelectorAll('.experience-item');
+            let currentExpanded = null;
+
+            experienceItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Don't expand if clicking on close button or tech tags
+                    if (e.target.classList.contains('close-btn') || 
+                        e.target.classList.contains('tech-tag')) {
+                        if (e.target.classList.contains('close-btn')) {
+                            collapseItem(this);
+                        }
+                        return;
+                    }
+
+                    // If this item is already expanded, do nothing (unless clicking close)
+                    if (this.classList.contains('expanded')) {
+                        return;
+                    }
+
+                    expandItem(this);
+                });
+            });
+
+            function expandItem(item) {
+                // Collapse any currently expanded item
+                if (currentExpanded && currentExpanded !== item) {
+                    currentExpanded.classList.remove('expanded');
+                }
+
+                // Expand the clicked item
+                item.classList.add('expanded');
+                currentExpanded = item;
+
+                // Hide other items temporarily
+                experienceItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.add('collapsed');
+                        setTimeout(() => {
+                            otherItem.classList.remove('collapsed');
+                            otherItem.classList.add('below');
+                        }, 300);
+                    }
+                });
+
+                // Scroll to expanded item
+                setTimeout(() => {
+                    item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 400);
+            }
+
+            function collapseItem(item) {
+                item.classList.remove('expanded');
+                currentExpanded = null;
+
+                // Reset all items
+                experienceItems.forEach(otherItem => {
+                    otherItem.classList.remove('collapsed', 'below');
+                });
+            }
         }
 
         // Render Certificates
