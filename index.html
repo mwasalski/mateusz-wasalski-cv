@@ -600,6 +600,10 @@
             line-height: 1.4;
         }
 
+        .challenge .details-list li {
+            margin-bottom: 6px;
+        }
+
         .challenge-result {
             grid-column: 1 / -1;
             padding-top: 10px;
@@ -1683,8 +1687,14 @@
                     ],
                     challenges: [
                         {
-                            problem: "Sprint reporting was assembled manually from Jira exports, which was slow and inconsistent between teams.",
-                            solution: "Automated daily ingestion via Python API connector and Auto Loader, with standardized gold-layer metrics.",
+                            problem: [
+                                "Sprint reporting was assembled manually from Jira exports",
+                                "Metrics were slow to produce and inconsistent between teams"
+                            ],
+                            solution: [
+                                "Automated daily ingestion via a custom Python API connector and Auto Loader",
+                                "Standardized sprint metrics in the gold layer"
+                            ],
                             result: "~75% less time spent on data analysis, no manual reporting overhead."
                         }
                     ]
@@ -1790,6 +1800,13 @@
             `).join('');
         }
 
+        // Problem/solution/result accept either a string or an array of bullet points
+        function renderChallengeText(value) {
+            return Array.isArray(value)
+                ? `<ul class="details-list">${value.map(v => `<li>${v}</li>`).join('')}</ul>`
+                : `<p>${value}</p>`;
+        }
+
         // Render Portfolio
         function renderPortfolio() {
             const list = document.getElementById('portfolioList');
@@ -1820,16 +1837,16 @@
                             <div class="challenge">
                                 <div>
                                     <div class="challenge-label problem">⚠ PROBLEM</div>
-                                    <p>${c.problem}</p>
+                                    ${renderChallengeText(c.problem)}
                                 </div>
                                 <div>
                                     <div class="challenge-label solution">✔ SOLUTION</div>
-                                    <p>${c.solution}</p>
+                                    ${renderChallengeText(c.solution)}
                                 </div>
                                 ${c.result ? `
                                 <div class="challenge-result">
                                     <div class="challenge-label solution">★ RESULT</div>
-                                    <p>${c.result}</p>
+                                    ${renderChallengeText(c.result)}
                                 </div>` : ''}
                             </div>
                         `).join('')}
